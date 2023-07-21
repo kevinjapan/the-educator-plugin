@@ -45,12 +45,15 @@ if ( ! class_exists( 'TheEducator' ) ) {
          // Schools     
          add_action('init',array($this,'register_taxonomy_schools'));
          
-         // Schools taxonomy meta (inc featured_image,..)                        // to do : rename and tidy meta fields..
-         add_action('te_school_add_form_fields',array($this,'taxonomy_add_custom_fields'));
-         add_action('te_school_edit_form_fields',array($this,'taxonomy_edit_custom_fields'));
-         add_action('admin_enqueue_scripts',array($this,'te_media_lib_script'));   // to do : file name
-         add_action('created_te_school',array($this,'save_taxonomy_custom_meta_field'));
-         add_action('edited_te_school',array($this,'update_taxonomy_custom_meta_field'));
+         // Schools taxonomy meta (inc featured_image,..)
+         add_action('te_school_add_form_fields',array($this,'school_taxonomy_add_custom_fields'));
+         add_action('te_school_edit_form_fields',array($this,'school_taxonomy_edit_custom_fields'));
+         add_action('created_te_school',array($this,'save_school_taxonomy_custom_meta_field'));
+         add_action('edited_te_school',array($this,'update_school_taxonomy_custom_meta_field'));
+
+         // enable WP Media Lib for img selection
+         add_action('admin_enqueue_scripts',array($this,'te_media_lib_script'));
+
 
       // Assets
       //
@@ -60,7 +63,9 @@ if ( ! class_exists( 'TheEducator' ) ) {
       // UI front-end shortcodes
       //
 
-         add_shortcode('courses',array($this,'courses_shortcode_html'));      // to do : rename and enable for TE.
+         add_shortcode('courses',array($this,'courses_shortcode_html'));
+         add_shortcode('jobs',array($this,'jobs_shortcode_html'));
+         add_shortcode('latest_news',array($this,'news_shortcode_html'));
 
       }
 
@@ -78,9 +83,8 @@ if ( ! class_exists( 'TheEducator' ) ) {
       }
 
       public function te_educator_deactivate() {
-         // Unregister the post type, so the rules are no longer in memory  // to do : go with this here?
+         // Unregister the post type, so the rules are no longer in memory
          // unregister_post_type( 'te_course' );
-
       }
 
 
@@ -91,21 +95,18 @@ if ( ! class_exists( 'TheEducator' ) ) {
       //
       public function create_course_post_type() {
 
-         // to do : verify text-domain and rollout.
-         // to do : do we need to explicitly specify all these labels - won't default work in most cases? rollout
-
          $labels = array(
-            'name'              => _x('Courses','te_textdomain'),
-            'singular_name'     => _x('Course','te_textdomain'),
-            'search_items'      => __('Search Course'),
-            'all_items'         => __('All Courses'),
-            'parent_item'       => __('Parent Course'),
-            'parent_item_colon' => __('Parent Course:'),
-            'edit_item'         => __('Edit Course'),
-            'update_item'       => __('Update Course'),
-            'add_new_item'      => __('Add New Course'),
-            'new_item_name'     => __('New Course Name'),
-            'menu_name'         => __('Courses'),
+            'name'              => _x('Courses','the-educator'),
+            'singular_name'     => _x('Course','the-educator'),
+            'all_items'         => __('All Courses','the-educator'),
+            'search_items'      => __('Search Course','the-educator'),
+            'parent_item'       => __('Parent Course','the-educator'),
+            'parent_item_colon' => __('Parent Course:','the-educator'),
+            'edit_item'         => __('Edit Course','the-educator'),
+            'update_item'       => __('Update Course','the-educator'),
+            'add_new_item'      => __('Add New Course','the-educator'),
+            'new_item_name'     => __('New Course Name','the-educator'),
+            'menu_name'         => __('Courses','the-educator'),
          );
 
          $args = array(
@@ -138,7 +139,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
             add_meta_box(
                'te_course',
-               __( 'Course Details', 'te' ),
+               __( 'Course Details', 'the-educator' ),
                array( $this, 'render_course_post_meta_box' ),
                $post_types,
                'advanced',
@@ -153,11 +154,11 @@ if ( ! class_exists( 'TheEducator' ) ) {
          return array(
             'tagline' => '',
             'topics' => '',
-            'ucas_code' => '',         // eg 'C300'
-            'duration' => '',          // eg '48 months'
-            'study_mode' => '',        // eg 'Full Time'
-            'start_month' => '',       // eg 'September'
-            'learning_mode' => '',     // eg 'On Campus Learning'
+            'ucas_code' => '',                        // eg 'C300'
+            'duration' => '',                         // eg '48 months'
+            'study_mode' => 'Full Time',              // eg 'Full Time'
+            'start_month' => 'September',             // eg 'September'
+            'learning_mode' => 'On Campus Learning',  // eg 'On Campus Learning'
          );
       }
 
@@ -168,12 +169,10 @@ if ( ! class_exists( 'TheEducator' ) ) {
          wp_nonce_field('te_courses_meta_box','te_courses_meta_nonce');
 
          $saved_details= get_post_meta( $post->ID, '_te_course_details_meta_key', true );
-         $default_details = $this->get_default_course_details();  // to do : ?
+         $default_details = $this->get_default_course_details();
          $details = wp_parse_args( $saved_details, $default_details ); // Merge the two in case any fields don't exist in the saved data
 
-         // to do : add these fields to course form - study_mode,start_month,learning_mode are all dropdown select option.
          // to do : limit input text lengths - rollout
-         // to do : wrap label around input?
 
          require_once 'views/course_custom_post_metabox.php';
       }
@@ -226,17 +225,17 @@ if ( ! class_exists( 'TheEducator' ) ) {
       public function create_job_post_type() {
       
          $labels = array(
-            'name'              => _x('Jobs','te_textdomain'),
-            'singular_name'     => _x('Job','te_textdomain'),
-            'search_items'      => __('Search Job'),
-            'all_items'         => __('All Jobs'),
-            'parent_item'       => __('Parent Job'),
-            'parent_item_colon' => __('Parent Job:'),
-            'edit_item'         => __('Edit Job'),
-            'update_item'       => __('Update Job'),
-            'add_new_item'      => __('Add New Job'),
-            'new_item_name'     => __('New Job Name'),
-            'menu_name'         => __('Jobs'),
+            'name'              => _x('Jobs','the-educator'),
+            'singular_name'     => _x('Job','the-educator'),
+            'all_items'         => __('All Jobs','the-educator'),
+            'search_items'      => __('Search Job','the-educator'),
+            'parent_item'       => __('Parent Job','the-educator'),
+            'parent_item_colon' => __('Parent Job:','the-educator'),
+            'edit_item'         => __('Edit Job','the-educator'),
+            'update_item'       => __('Update Job','the-educator'),
+            'add_new_item'      => __('Add New Job','the-educator'),
+            'new_item_name'     => __('New Job Name','the-educator'),
+            'menu_name'         => __('Jobs','the-educator'),
          );
 
          $args = array(
@@ -269,7 +268,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
             add_meta_box(
                'te_course',
-               __( 'Job Details', 'te' ),
+               __( 'Job Details', 'the-educator' ),
                array( $this, 'render_job_post_meta_box' ),
                $post_types,
                'advanced',
@@ -303,7 +302,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
          wp_nonce_field('te_jobs_meta_box','te_jobs_meta_nonce');
 
          $saved_details= get_post_meta( $post->ID, '_te_job_details_meta_key', true );
-         $default_details = $this->get_default_job_details();  // to do : ?
+         $default_details = $this->get_default_job_details();
          $details = wp_parse_args( $saved_details, $default_details ); // Merge the two in case any fields don't exist in the saved data
 
          require_once 'views/job_custom_post_metabox.php';
@@ -364,20 +363,18 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
       public function register_taxonomy_schools() {
          $labels = array(
-            'name'              => _x('Schools','taxonomy general name'),
-            'singular_name'     => _x('School','taxonomy singular name'),
-            'search_items'      => __('Search Schools'),
-            'all_items'         => __('All Schools'),
-            'parent_item'       => __('Parent School'),
-            'parent_item_colon' => __('Parent School:'),
-            'edit_item'         => __('Edit School'),
-            'update_item'       => __('Update School'),
-            'add_new_item'      => __('Add New School'),
-            'new_item_name'     => __('New School Name'),
-            'menu_name'         => __('Schools'),
+            'name'              => _x('Schools','the-educator'),
+            'singular_name'     => _x('School','the-educator'),
+            'all_items'         => __('All Schools','the-educator'),
+            'search_items'      => __('Search Schools','the-educator'),
+            'parent_item'       => __('Parent School','the-educator'),
+            'parent_item_colon' => __('Parent School:','the-educator'),
+            'edit_item'         => __('Edit School','the-educator'),
+            'update_item'       => __('Update School','the-educator'),
+            'add_new_item'      => __('Add New School','the-educator'),
+            'new_item_name'     => __('New School Name','the-educator'),
+            'menu_name'         => __('Schools','the-educator'),
          );
-
-         // to do : add text-domain to items above eg: 'add_or_remove_items' => __('Remove Feature', 'my_plugin'),
 
          $args   = array(
             'hierarchical'      => true, // make it hierarchical (like categories)
@@ -397,8 +394,8 @@ if ( ! class_exists( 'TheEducator' ) ) {
       // taxonomy custom fields - in our case, taxonomy term thumbnails - 
       // in our archive list of schools, each school will display a featured img.
       //
-      public function taxonomy_add_custom_fields() {
-         // to do : rename 'category_image' etc - better descriptive
+      public function school_taxonomy_add_custom_fields() {
+         // to do : rename 'category_image' etc - be descriptive
          ?>
          <div class="form-field term-image-wrap">
             <label for="category_image"><?php _e( 'Image' ); ?></label>
@@ -407,7 +404,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
          </div>
          <?php
       }
-      public function taxonomy_edit_custom_fields($term) {
+      public function school_taxonomy_edit_custom_fields($term) {
          $image = get_term_meta($term->term_id, 'category_image', true);
          ?>
          <tr class="form-field term-image-wrap">
@@ -419,15 +416,15 @@ if ( ! class_exists( 'TheEducator' ) ) {
          </tr>
          <?php
       }
-      public function save_taxonomy_custom_meta_field( $term_id ) {
+      public function save_school_taxonomy_custom_meta_field( $term_id ) {
          if ( isset( $_POST['category_image'] ) ) {
             update_term_meta($term_id, 'category_image', $_POST['category_image']);
          }
       }  
-      public function update_taxonomy_custom_meta_field($term_id) {
+      public function update_school_taxonomy_custom_meta_field($term_id) {
             // some sources suggest separate 'save' and 'update' functionality?
-            // if we do separate, use 'add_term_meta()' in 'save_taxonomy_custom_meta_field()'.
-            $this->save_taxonomy_custom_meta_field($term_id);
+            // if we do separate, use 'add_term_meta()' in 'save_school_taxonomy_custom_meta_field()'.
+            $this->save_school_taxonomy_custom_meta_field($term_id);
       }
 
       // script for accessing WP media library to select featured image
@@ -529,6 +526,16 @@ if ( ! class_exists( 'TheEducator' ) ) {
       public function jobs_shortcode_html() {
          ob_start(); // buffer output
          require_once 'views/jobs_shortcode.php';
+         $buffered_data = ob_get_clean();    // return buffered output
+         return $buffered_data;
+      }
+
+      
+      // [news]
+      //
+      public function news_shortcode_html() {
+         ob_start(); // buffer output
+         require_once 'views/news_shortcode.php';
          $buffered_data = ob_get_clean();    // return buffered output
          return $buffered_data;
       }

@@ -33,7 +33,7 @@ $count = 0;
    </ul>
 
    <button class="">
-      <a href="<?php echo get_post_type_archive_link('te_course'); ?>">More Courses</a>
+      <a href="<?php echo get_post_type_archive_link('te_job'); ?>">More Jobs</a>
    </button>
 
 </section>
