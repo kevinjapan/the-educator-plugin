@@ -66,9 +66,9 @@ if ( ! class_exists( 'TheEducator' ) ) {
          add_shortcode('courses',array($this,'courses_shortcode_html'));
          add_shortcode('jobs',array($this,'jobs_shortcode_html'));
          add_shortcode('latest_news',array($this,'news_shortcode_html'));
+         add_shortcode('schools',array($this,'schools_shortcode_html'));
 
       }
-
 
 
    // Housekeeping
@@ -212,11 +212,9 @@ if ( ! class_exists( 'TheEducator' ) ) {
             $sanitized[$key] = wp_filter_post_kses( $detail );
 
          }
-
          // Save our submissions to the database
          update_post_meta( $post_id, '_te_course_details_meta_key', $sanitized );
       }
-
 
 
    // Jobs - create custom post type 'te_job'
@@ -500,7 +498,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
          // ); 
          // wp_enqueue_script(
          //    'te',
-         //    plugin_dir_url( __FILE__ ) . 'js/web-dev-agent.js',
+         //    plugin_dir_url( __FILE__ ) . 'js/the-educator.js',
          //    array('jquery'),
          //    1,
          //    true
@@ -540,6 +538,15 @@ if ( ! class_exists( 'TheEducator' ) ) {
          return $buffered_data;
       }
 
+      
+      // [schools]
+      //
+      public function schools_shortcode_html() {
+         ob_start(); // buffer output
+         require_once 'views/schools_shortcode.php';
+         $buffered_data = ob_get_clean();    // return buffered output
+         return $buffered_data;
+      }
    }
 
 }

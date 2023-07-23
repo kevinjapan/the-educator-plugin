@@ -829,6 +829,10 @@ section.feature_tiles a {
    section.feature_tiles > ul > li {
       width:25%;
    }
+   section.feature_tiles.teasers > ul {
+      width:10%;
+      background:yellow !important; /* to do : */
+   }
 }
 
 /* 
@@ -880,6 +884,7 @@ section.cover_block div {
    margin-right:.5rem;
    padding:.5rem;
 }
+
 
 @media screen and (min-width: 768px) {
     
