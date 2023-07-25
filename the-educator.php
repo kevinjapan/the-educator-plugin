@@ -393,7 +393,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
       // in our archive list of schools, each school will display a featured img.
       //
       public function school_taxonomy_add_custom_fields() {
-         // to do : rename 'category_image' etc - be descriptive
+         // 'category_image' is the custom taxonomy featured image
          ?>
          <div class="form-field term-image-wrap">
             <label for="category_image"><?php _e( 'Image' ); ?></label>
@@ -462,47 +462,14 @@ if ( ! class_exists( 'TheEducator' ) ) {
       {
          // we don't enqueue these assets since they are enqueued by The Educator theme
 
-         //
-         // to do : on-going
+         // future : on-going
          // does WP enqueuing allow for theme/plugin duplication and prevent it? (include css only once?)
-         // currently, we rely on WDA theme - so these plugins won't work in other themes. (require outline & wda.css)
-         //
-         
-         // wp_enqueue_style(
-         //    'wda_outline',
-         //    plugin_dir_url( __FILE__ ) . 'css/outline.css',
-         //    array(),
-         //    1,
-         //    'all'
-         // );  
-         // wp_enqueue_style(
-         //    'wda_outline_layouts',
-         //    plugin_dir_url( __FILE__ ) . 'css/outline-layouts.css',
-         //    array(),
-         //    1,
-         //    'all'
-         // );  
-         // wp_enqueue_style(
-         //    'wda_outline_custom_props',
-         //    plugin_dir_url( __FILE__ ) . 'css/outline-custom-props.css',
-         //    array(),
-         //    1,
-         //    'all'
-         // );  
-         // wp_enqueue_style(
-         //    'wda_outline_utilities',
-         //    plugin_dir_url( __FILE__ ) . 'css/outline-utilities.css',
-         //    array(),
-         //    1,
-         //    'all'
-         // ); 
-         // wp_enqueue_script(
-         //    'te',
-         //    plugin_dir_url( __FILE__ ) . 'js/the-educator.js',
-         //    array('jquery'),
-         //    1,
-         //    true
-         // );
+         // currently, we rely on The Educator theme - these plugins won't work in other themes. (require outline & the-educator css & use custom post types)
+         // wp_enqueue_style( 'wda_outline', plugin_dir_url( __FILE__ ) . 'css/outline.css', array(), 1, 'all');  
+         // wp_enqueue_style( 'wda_outline_layouts', plugin_dir_url( __FILE__ ) . 'css/outline-layouts.css', array(), 1, 'all');  
+         // wp_enqueue_style( 'wda_outline_custom_props', plugin_dir_url( __FILE__ ) . 'css/outline-custom-props.css', array(), 1, 'all');  
+         // wp_enqueue_style( 'wda_outline_utilities', plugin_dir_url( __FILE__ ) . 'css/outline-utilities.css', array(), 1, 'all'); 
+         // wp_enqueue_script( 'te', plugin_dir_url( __FILE__ ) . 'js/the-educator.js', array('jquery'), 1, true);
       }
       
 

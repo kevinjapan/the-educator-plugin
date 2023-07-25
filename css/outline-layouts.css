@@ -831,7 +831,6 @@ section.feature_tiles a {
    }
    section.feature_tiles.teasers > ul {
       width:10%;
-      background:yellow !important; /* to do : */
    }
 }
 
@@ -1018,24 +1017,6 @@ div.ol_info {
    border:solid 1px blue;
 }
 div.ol_info p {margin:0;}
-div.ol_specimen_type {
-   width:fit-content;
-   margin-top:4rem;
-   margin-bottom:.5rem;
-   margin-left:1rem;
-   margin-right:auto;
-   padding:.25rem;
-   padding-left:.5rem;
-   padding-right:.5rem;
-   border:solid 1px lightgrey;
-   border-radius:.5rem;
-}
-div.ol_specimen_type::before {
-   content:'specimen type';
-   padding-left:.5rem;
-   padding-right:1rem;
-   color:lightgrey
-}
 
 /* paragraph block of text */
 p {

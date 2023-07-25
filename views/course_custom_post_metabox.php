@@ -1,3 +1,10 @@
+<?php
+
+// Custom Fields
+// tagline, topics, ucas_code, duration, study_mode, start_month, learning_mode
+
+?>
+
 <div class="form-wrap">
    <div class="form-field term-image-wrap">
       <label for="te_course_custom_metabox_tagline">Tagline</label>
@@ -46,7 +53,7 @@
       </select>
    </div>
    <div class="form-field term-image-wrap">
-      <label for="te_course_custom_metabox_learning_mode">Study Mode</label>
+      <label for="te_course_custom_metabox_learning_mode">Learning Mode</label>
       <select name="_te_course_array_fields[learning_mode]" id="te_course_learning_mode_field">
          <option value="On Campus Learning"        <?php selected($details['learning_mode'],'On Campus Learning');?> >On Campus Learning</option>
          <option value="Online Learning"        <?php selected($details['learning_mode'],'Online Learning');?> >Online Learning</option>

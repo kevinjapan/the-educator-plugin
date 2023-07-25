@@ -10,7 +10,7 @@ $loop = new WP_Query($args);
 $count = 0;
 ?>         
 
-<section class="feature_tiles stagger_tiles fade_in" style="background:lightgrey;">
+<section class="feature_tiles stagger_tiles fade_in" style="width:90%;">
    <ul>
       <?php
       while ( $loop->have_posts() ) {
@@ -23,7 +23,10 @@ $count = 0;
                <?php endif;?>
                <h4><?php the_title();?></h4>
                <?php the_excerpt();?>
-               <a style="float:right;" href="<?php the_permalink(); ?>">read more</a>
+               
+               <div class="wp-block-button te_button wee_te_button" style="margin-top:2rem;margin-bottom:0;">
+                  <a class="wp-block-button__link wp-element-button" href="<?php the_permalink(); ?>">read more</a>
+               </div>
             </li>
          <?php
          $count++;
@@ -32,9 +35,15 @@ $count = 0;
       ?>
    </ul>
 
-   <!-- to do : get link to 'News' category -->
-   <button class="">
-      <a href="<?php echo get_category_link('News'); ?>">More News</a>
-   </button>
+   <?php
+   $category_id = get_cat_ID('news');
+   ?>
+   <div class="wp-block-buttons te_buttons is-layout-flex">
+      <div class="wp-block-button te_button">
+         <a href="<?php echo get_category_link($category_id); ?>" 
+            class="wp-block-button__link wp-element-button">Read More News..</a>
+      </div>
+   </div>
+
 
 </section>

@@ -1,3 +1,10 @@
+<?php
+
+// Custom Fields
+// school_or_section, staff_category, position_type, duration, grade, salary, location, ref, closing_date
+
+?>
+
 <div class="form-wrap">
    <div class="form-field term-image-wrap">
       <label for="te_job_custom_metabox_school_or_section">School/Section</label>
