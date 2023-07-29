@@ -4,10 +4,12 @@ $args = array(
    'category_name' => 'news',
    'posts_per_page' => 10,
 );
+
 $loop = new WP_Query($args);
 
-// we limit to 6 most recent projects
+// we limit to 6 most recent
 $count = 0;
+
 ?>         
 
 <section class="feature_tiles stagger_tiles fade_in" style="width:90%;">

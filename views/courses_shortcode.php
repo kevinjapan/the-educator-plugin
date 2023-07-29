@@ -3,10 +3,14 @@ $args = array(
    'post_type' => 'te_course',
    'posts_per_page' => 10,
 );
+
 $loop = new WP_Query($args);
 
-// we limit to 3 most recent projects
+s
+// we limit to 3 most recent
 $count = 0;
+
+
 ?>         
 <section class="animated_tiles">
    <h3>Courses</h3>

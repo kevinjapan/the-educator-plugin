@@ -3,6 +3,9 @@
 // Custom Fields
 // tagline, topics, ucas_code, duration, study_mode, start_month, learning_mode
 
+
+// future : limit input text lengths - rollout
+
 ?>
 
 <div class="form-wrap">

@@ -24,6 +24,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
          register_deactivation_hook(__FILE__,array($this,'te_educator_deactivate'));
          // register_uninstall_hook(__FILE__,'pluginprefix_function_to_run');          // see uninstall.php 
 
+
       // Custom Post Types
       //
 
@@ -37,8 +38,10 @@ if ( ! class_exists( 'TheEducator' ) ) {
          add_action('add_meta_boxes',array( $this,'add_job_post_meta_box')); 
          add_action('save_post',array($this,'save_job_post_meta'));
          
+
       // Custom Taxonomies
       //
+
          // Categories 'news','research news'
          add_action('init',array($this,'add_custom_categories'));
 
@@ -171,8 +174,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $saved_details= get_post_meta( $post->ID, '_te_course_details_meta_key', true );
          $default_details = $this->get_default_course_details();
          $details = wp_parse_args( $saved_details, $default_details ); // Merge the two in case any fields don't exist in the saved data
-
-         // to do : limit input text lengths - rollout
 
          require_once 'views/course_custom_post_metabox.php';
       }

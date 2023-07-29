@@ -1,9 +1,11 @@
 <?php
+
 $terms = get_terms( array( 
    'taxonomy' => 'te_school',    // exclude all non 'school' taxonomies.
    'parent'   => 0,              // top-level only
    'hide_empty' => false,         // show all regardless
 ));
+
 ?>  
 
 <section class="feature_tiles teasers fade_in">
