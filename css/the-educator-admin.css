@@ -1,0 +1,35 @@
+/* 
+
+The Educator Custom CSS for WordPress Admin 
+
+We don't overwrite styles in WP Admin, instead we provide custom style classes
+clearly name-spaced to the WDA theme and plugins.
+
+*/
+
+
+/* 
+   Input/label combos 
+*/
+label.te_label {
+   display:grid;
+   grid-template-columns: 1fr 4fr;
+   justify-content:space-between;
+   /* width:100%; */
+   margin-bottom:.5rem;
+}
+label.te_label span.te_label_text {
+   padding-top:.35rem;
+}
+input.te_input {
+   width:100%;
+   background:hsl(0, 0%, 97%);
+}
+
+
+/* 
+   Checkboxes 
+*/
+input.te_checkbox {
+   visibility:visible;
+}
