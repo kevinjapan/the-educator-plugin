@@ -6,10 +6,9 @@ $args = array(
 
 $loop = new WP_Query($args);
 
-s
+
 // we limit to 3 most recent
 $count = 0;
-
 
 ?>         
 <section class="animated_tiles">
@@ -28,7 +27,7 @@ $count = 0;
                <h3><?php echo get_the_title();?></h3>
                <p><?php echo get_post_meta( get_the_ID(), 'te_course_tagline', true );?></p>
                <!-- <p><?php echo get_the_excerpt();?></p> -->
-               <button><a href="<?php echo get_permalink(get_the_ID()); ?>">course details</a></button>
+               <button><a href="<?php echo get_permalink(get_the_ID()); ?>">Course Details</a></button>
             </li>
          <?php
          $count++;

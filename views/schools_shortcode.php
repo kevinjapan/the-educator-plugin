@@ -17,9 +17,7 @@ $terms = get_terms( array(
          <li style="border:none;">
             <?php
             if($image) {
-               ?>
-               <img style="border-radius:.25rem;" src="<?php echo $image; ?>"/>
-               <?php
+               ?><img style="border-radius:.25rem;" src="<?php echo $image; ?>"/><?php
             }
             else {
                ?><p style="height:20px;"></p><?php
@@ -28,7 +26,6 @@ $terms = get_terms( array(
             <h4 style="text-align:center;">
                <a href="<?php echo get_term_link($term->name,'te_school'); ?>"><?php echo $term->name;?></a>
             </h4>
-
          </li>
          <?php
       }

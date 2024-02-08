@@ -17,12 +17,12 @@ $count = 0;
       <?php
       while ( $loop->have_posts() ) {
          $loop->the_post();
-            ?>
-            
+            ?>            
             <li style="border:none;">
                <?php if(has_post_thumbnail()):?>
                   <img src="<?php the_post_thumbnail_url('large'); ?>"/>
                <?php endif;?>
+               
                <h4><?php the_title();?></h4>
                <?php the_excerpt();?>
                

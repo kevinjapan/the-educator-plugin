@@ -22,7 +22,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
          register_activation_hook(__FILE__,array($this,'te_educator_activate'));
          register_deactivation_hook(__FILE__,array($this,'te_educator_deactivate'));
-         // register_uninstall_hook(__FILE__,'pluginprefix_function_to_run');          // see uninstall.php 
+         // register_uninstall_hook(__FILE__,'pluginprefix_function_to_run'); // we use uninstall.php 
 
 
       // Custom Post Types
@@ -62,6 +62,8 @@ if ( ! class_exists( 'TheEducator' ) ) {
       //
 
          add_action('wp_enqueue_scripts',array($this,'enqueue_assets'));
+         add_action('admin_enqueue_scripts', array($this,'enqueue_admin_assets'));
+   
 
       // UI front-end shortcodes
       //
@@ -405,6 +407,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
       }
       public function school_taxonomy_edit_custom_fields($term) {
          $image = get_term_meta($term->term_id, 'category_image', true);
+         // to do : review - ensure we are injecting into a table correctly.. 
          ?>
          <tr class="form-field term-image-wrap">
             <th scope="row"><label for="category_image"><?php _e( 'Image' ); ?></label></th>
@@ -421,9 +424,9 @@ if ( ! class_exists( 'TheEducator' ) ) {
          }
       }  
       public function update_school_taxonomy_custom_meta_field($term_id) {
-            // some sources suggest separate 'save' and 'update' functionality?
-            // if we do separate, use 'add_term_meta()' in 'save_school_taxonomy_custom_meta_field()'.
-            $this->save_school_taxonomy_custom_meta_field($term_id);
+         // some sources suggest separate 'save' and 'update' functionality?
+         // if we do separate, use 'add_term_meta()' in 'save_school_taxonomy_custom_meta_field()'.
+         $this->save_school_taxonomy_custom_meta_field($term_id);
       }
 
       // script for accessing WP media library to select featured image
@@ -438,11 +441,11 @@ if ( ! class_exists( 'TheEducator' ) ) {
       public function insert_default_schools() {
 
          $default_schools = [
-            '0' => array('name' => 'Engineering',            'slug' => '','description' => 'school of engineering'),
-            '1' => array('name' => 'Science and Mathematics','slug' => '','description' => 'school of science and mathematics'),
-            '2' => array('name' => 'Arts and Humanities',    'slug' => '','description' => 'school of arts and humanities'),
-            '3' => array('name' => 'Agriculture',            'slug' => '','description' => 'school of agriculture'),
-            '4' => array('name' => 'Business and Economics', 'slug' => '','description' => 'school of business and economics'),
+            '0' => array('name' => 'Engineering',            'slug' => '','description' => 'School of Engineering'),
+            '1' => array('name' => 'Science and Mathematics','slug' => '','description' => 'School of Science and Mathematics'),
+            '2' => array('name' => 'Arts and Humanities',    'slug' => '','description' => 'School of Arts and Humanities'),
+            '3' => array('name' => 'Agriculture',            'slug' => '','description' => 'School of Agriculture'),
+            '4' => array('name' => 'Business and Economics', 'slug' => '','description' => 'School of Business and Economics'),
          ];
          foreach($default_schools as $school) {
             if(!term_exists( $school['name'], 'te_school' )) {
@@ -459,19 +462,23 @@ if ( ! class_exists( 'TheEducator' ) ) {
    // Assets
    //
 
-      public function enqueue_assets() 
-      {
-         // we don't enqueue these assets since they are enqueued by The Educator theme
-
-         // future : on-going
-         // does WP enqueuing allow for theme/plugin duplication and prevent it? (include css only once?)
-         // currently, we rely on The Educator theme - these plugins won't work in other themes. (require outline & the-educator css & use custom post types)
-         // wp_enqueue_style( 'wda_outline', plugin_dir_url( __FILE__ ) . 'css/outline.css', array(), 1, 'all');  
-         // wp_enqueue_style( 'wda_outline_layouts', plugin_dir_url( __FILE__ ) . 'css/outline-layouts.css', array(), 1, 'all');  
-         // wp_enqueue_style( 'wda_outline_custom_props', plugin_dir_url( __FILE__ ) . 'css/outline-custom-props.css', array(), 1, 'all');  
-         // wp_enqueue_style( 'wda_outline_utilities', plugin_dir_url( __FILE__ ) . 'css/outline-utilities.css', array(), 1, 'all'); 
-         // wp_enqueue_script( 'te', plugin_dir_url( __FILE__ ) . 'js/the-educator.js', array('jquery'), 1, true);
+      public function enqueue_assets() {
+         wp_register_style('outline',get_template_directory_uri() . '/css/outline.css',array(),1,'all');
+         wp_enqueue_style('outline');
+         wp_register_style('outline_custom_props',get_template_directory_uri() . '/css/outline-custom-props.css',array(),1,'all');
+         wp_enqueue_style('outline_custom_props');
+         wp_register_style('outline_layouts',get_template_directory_uri() . '/css/outline-layouts.css',array(),1,'all');
+         wp_enqueue_style('outline_layouts');
+         wp_register_style('outline_utilities',get_template_directory_uri() . '/css/outline-utilities.css',array(),1,'all');
+         wp_enqueue_style('outline_utilities');
+         wp_register_style('te_stylesheet',get_template_directory_uri() . '/css/the-educator.css',array(),1,'all');
+         wp_enqueue_style('te_stylesheet');
       }
+      public function enqueue_admin_assets() { 
+         wp_register_style('te_custom_wp_admin_css',plugin_dir_url( __FILE__ ) . 'css/the-educator-admin.css',array(),1,'all'); 
+         wp_enqueue_style( 'te_custom_wp_admin_css' );
+      }
+      
       
 
    // UI front-end shortcodes

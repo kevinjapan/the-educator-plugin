@@ -24,8 +24,9 @@ $count = 0;
                   <img src="<?php the_post_thumbnail_url('large'); ?>"/>
                <?php endif;
                ?>
+               
                <h3><?php echo get_the_title();?></h3>
-               <!-- <p><?php echo get_the_excerpt();?></p> -->
+
                <button><a href="<?php echo get_permalink(get_the_ID()); ?>">job details</a></button>
             </li>
          <?php
