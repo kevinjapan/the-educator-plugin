@@ -2,7 +2,7 @@
 /*
 Plugin Name: The Educator
 Plugin URI: 
-Description: Create Custom Post Types and UIs for The Educator Theme
+Description: Creates Custom Post Types and UIs for The Educator Theme
 Version: 1.0.0
 Author: edk
 Author URI: evolutiondesuka.com
@@ -22,12 +22,11 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
          register_activation_hook(__FILE__,array($this,'te_educator_activate'));
          register_deactivation_hook(__FILE__,array($this,'te_educator_deactivate'));
-         // register_uninstall_hook(__FILE__,'pluginprefix_function_to_run'); // we use uninstall.php 
+         // register_uninstall_hook(__FILE__,'pluginprefix_function_to_run');  // we use uninstall.php 
 
 
       // Custom Post Types
       //
-
          // Courses
          add_action('init',array($this,'create_course_post_type'));
          add_action('add_meta_boxes',array( $this,'add_course_post_meta_box')); 
@@ -41,11 +40,10 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
       // Custom Taxonomies
       //
-
          // Categories 'news','research news'
          add_action('init',array($this,'add_custom_categories'));
 
-         // Schools     
+         // Schools taxonomy (category)
          add_action('init',array($this,'register_taxonomy_schools'));
          
          // Schools taxonomy meta (inc featured_image,..)
@@ -54,20 +52,18 @@ if ( ! class_exists( 'TheEducator' ) ) {
          add_action('created_te_school',array($this,'save_school_taxonomy_custom_meta_field'));
          add_action('edited_te_school',array($this,'update_school_taxonomy_custom_meta_field'));
 
-         // enable WP Media Lib for img selection
-         add_action('admin_enqueue_scripts',array($this,'te_media_lib_script'));
-
+         // inject scripts
+         add_action('wp_enqueue_scripts', array($this,'te_plugin_scripts'));
+         add_action('admin_enqueue_scripts',array($this,'te_plugin_admin_scripts'));
 
       // Assets
       //
-
          add_action('wp_enqueue_scripts',array($this,'enqueue_assets'));
          add_action('admin_enqueue_scripts', array($this,'enqueue_admin_assets'));
    
 
       // UI front-end shortcodes
       //
-
          add_shortcode('courses',array($this,'courses_shortcode_html'));
          add_shortcode('jobs',array($this,'jobs_shortcode_html'));
          add_shortcode('latest_news',array($this,'news_shortcode_html'));
@@ -95,11 +91,9 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Custom Post Types
    //
-
       // Courses - create custom post type 'te_course'
       //
       public function create_course_post_type() {
-
          $labels = array(
             'name'              => _x('Courses','the-educator'),
             'singular_name'     => _x('Course','the-educator'),
@@ -113,7 +107,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
             'new_item_name'     => __('New Course Name','the-educator'),
             'menu_name'         => __('Courses','the-educator'),
          );
-
          $args = array(
             'labels' => $labels,
             'description' => 'Course Custom Post Type',
@@ -133,7 +126,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Custom Meta Box for 'te_course' posts.
    //
-
       // edit Course post
       //
       public function add_course_post_meta_box( $post_type ) {
@@ -141,7 +133,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $post_types = array( 'te_course' );
 
          if ( in_array( $post_type, $post_types ) ) {
-
             add_meta_box(
                'te_course',
                __( 'Course Details', 'the-educator' ),
@@ -177,6 +168,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $default_details = $this->get_default_course_details();
          $details = wp_parse_args( $saved_details, $default_details ); // Merge the two in case any fields don't exist in the saved data
 
+         //  $details used in this file:
          require_once 'views/course_custom_post_metabox.php';
       }
 
@@ -222,9 +214,7 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Jobs - create custom post type 'te_job'
    //
-
-      public function create_job_post_type() {
-      
+      public function create_job_post_type() {      
          $labels = array(
             'name'              => _x('Jobs','the-educator'),
             'singular_name'     => _x('Job','the-educator'),
@@ -238,7 +228,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
             'new_item_name'     => __('New Job Name','the-educator'),
             'menu_name'         => __('Jobs','the-educator'),
          );
-
          $args = array(
             'labels' => $labels,
             'description' => 'Job Custom Post Type',
@@ -258,7 +247,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Custom Meta Box for 'te_job' posts.
    //
-
       // edit Job page
       //
       public function add_job_post_meta_box( $post_type ) {
@@ -350,7 +338,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Custom Categories
    //
-
       // 'Posts' - additional categories supported by the educator theme template files : 'news','research news'
       //
       public function add_custom_categories() {
@@ -361,7 +348,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Custom Taxonomies
    //
-
       public function register_taxonomy_schools() {
          $labels = array(
             'name'              => _x('Schools','the-educator'),
@@ -376,7 +362,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
             'new_item_name'     => __('New School Name','the-educator'),
             'menu_name'         => __('Schools','the-educator'),
          );
-
          $args   = array(
             'hierarchical'      => true, // make it hierarchical (like categories)
             'labels'            => $labels,
@@ -396,56 +381,56 @@ if ( ! class_exists( 'TheEducator' ) ) {
       // in our archive list of schools, each school will display a featured img.
       //
       public function school_taxonomy_add_custom_fields() {
-         // 'category_image' is the custom taxonomy featured image
          ?>
          <div class="form-field term-image-wrap">
-            <label for="category_image"><?php _e( 'Image' ); ?></label>
+            <img id="school_image_elem" src="" style="height:300px;"/>
+            <label for="school_image"><?php _e( 'Image' ); ?></label>
             <p><a href="#" class="aw_upload_image_button button button-secondary"><?php _e('Upload Image'); ?></a></p>
-            <input type="text" name="category_image" id="category_image" value="" size="40" />
+            <input type="text" name="school_image" id="school_image" value="" size="40" />
          </div>
          <?php
       }
+
       public function school_taxonomy_edit_custom_fields($term) {
-         $image = get_term_meta($term->term_id, 'category_image', true);
-         // to do : review - ensure we are injecting into a table correctly.. 
+
+         $image = get_term_meta($term->term_id, 'school_image', true);
+
+         // we add as <tr> to integrate w/ existing WP form 
          ?>
          <tr class="form-field term-image-wrap">
-            <th scope="row"><label for="category_image"><?php _e( 'Image' ); ?></label></th>
+            <th scope="row"><label for="school_image"><?php _e( 'Image' ); ?></label></th>
             <td>
+               <img id="school_image_elem" src="<?php echo $image;?>" style="height:300px;"/>
                <p><a href="#" class="aw_upload_image_button button button-secondary"><?php _e('Upload Image'); ?></a></p><br/>
-               <input type="text" name="category_image" id="category_image" value="<?php echo $image; ?>" size="40" />
+               <input type="text" name="school_image" id="school_image" value="<?php echo $image; ?>" size="40" />
             </td>
          </tr>
          <?php
       }
+
       public function save_school_taxonomy_custom_meta_field( $term_id ) {
-         if ( isset( $_POST['category_image'] ) ) {
-            update_term_meta($term_id, 'category_image', $_POST['category_image']);
+         if ( isset( $_POST['school_image'] ) ) {
+            update_term_meta($term_id, 'school_image', $_POST['school_image']);
          }
       }  
+
       public function update_school_taxonomy_custom_meta_field($term_id) {
          // some sources suggest separate 'save' and 'update' functionality?
          // if we do separate, use 'add_term_meta()' in 'save_school_taxonomy_custom_meta_field()'.
          $this->save_school_taxonomy_custom_meta_field($term_id);
       }
 
-      // script for accessing WP media library to select featured image
-      // 
-      public function te_media_lib_script() {
-         if (!did_action('wp_enqueue_media')) { wp_enqueue_media(); }
-         wp_enqueue_script( 'te_media', get_stylesheet_directory_uri() . '/js/te_media.js', array('jquery'), null, false );
-      }
 
       // Pre-populate Schools terms with a set of default standards.
       //
       public function insert_default_schools() {
 
          $default_schools = [
-            '0' => array('name' => 'Engineering',            'slug' => '','description' => 'School of Engineering'),
-            '1' => array('name' => 'Science and Mathematics','slug' => '','description' => 'School of Science and Mathematics'),
-            '2' => array('name' => 'Arts and Humanities',    'slug' => '','description' => 'School of Arts and Humanities'),
-            '3' => array('name' => 'Agriculture',            'slug' => '','description' => 'School of Agriculture'),
-            '4' => array('name' => 'Business and Economics', 'slug' => '','description' => 'School of Business and Economics'),
+            '0' => array('name' => 'Engineering',            'slug' => 'engineering','description' => 'School of Engineering'),
+            '1' => array('name' => 'Science and Mathematics','slug' => 'science-and-mathematics','description' => 'School of Science and Mathematics'),
+            '2' => array('name' => 'Arts and Humanities',    'slug' => 'arts-and-humanities','description' => 'School of Arts and Humanities'),
+            '3' => array('name' => 'Agriculture',            'slug' => 'agriculture','description' => 'School of Agriculture'),
+            '4' => array('name' => 'Business and Economics', 'slug' => 'business-and-economics','description' => 'School of Business and Economics'),
          ];
          foreach($default_schools as $school) {
             if(!term_exists( $school['name'], 'te_school' )) {
@@ -461,7 +446,8 @@ if ( ! class_exists( 'TheEducator' ) ) {
 
    // Assets
    //
-
+      // stylesheets
+      //
       public function enqueue_assets() {
          wp_register_style('outline',get_template_directory_uri() . '/css/outline.css',array(),1,'all');
          wp_enqueue_style('outline');
@@ -479,11 +465,19 @@ if ( ! class_exists( 'TheEducator' ) ) {
          wp_enqueue_style( 'te_custom_wp_admin_css' );
       }
       
-      
+      // scripts
+      //
+      public function te_plugin_scripts() {
+
+      }
+      public function te_plugin_admin_scripts() {
+         if (!did_action('wp_enqueue_media')) { wp_enqueue_media(); }
+         wp_enqueue_script( 'script-name', plugin_dir_url(__FILE__) . '/js/te_plugin_admin_scripts.js', array(), '1.0.0', array('strategy' => 'defer') );
+      }
+
 
    // UI front-end shortcodes
    //
-
       // [courses]
       //
       public function courses_shortcode_html() {
@@ -492,7 +486,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $buffered_data = ob_get_clean();    // return buffered output
          return $buffered_data;
       }
-
       
       // [jobs]
       //
@@ -502,7 +495,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $buffered_data = ob_get_clean();    // return buffered output
          return $buffered_data;
       }
-
       
       // [news]
       //
@@ -512,7 +504,6 @@ if ( ! class_exists( 'TheEducator' ) ) {
          $buffered_data = ob_get_clean();    // return buffered output
          return $buffered_data;
       }
-
       
       // [schools]
       //
