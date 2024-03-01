@@ -1,4 +1,7 @@
 <?php
+//
+// Jobs front-end shortcode UI
+//
 $args = array(
    'post_type' => 'te_job',
    'posts_per_page' => 10,

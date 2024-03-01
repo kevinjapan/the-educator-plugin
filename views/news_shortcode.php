@@ -1,4 +1,7 @@
 <?php
+//
+// News front-end shortcode UI
+//
 $args = array(
    'post_type' => 'post',
    'category_name' => 'news',

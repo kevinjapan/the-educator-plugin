@@ -1,5 +1,7 @@
 <?php
-
+//
+// Schools front-end shortcode UI
+//
 $terms = get_terms( array( 
    'taxonomy' => 'te_school',    // exclude all non 'school' taxonomies.
    'parent'   => 0,              // top-level only
@@ -12,7 +14,7 @@ $terms = get_terms( array(
    <ul>
       <?php
       foreach($terms as $term) {
-         $image = get_term_meta($term->term_id, 'category_image', true);
+         $image = get_term_meta($term->term_id, 'school_image', true);
          ?>
          <li style="border:none;">
             <?php

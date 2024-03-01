@@ -1,4 +1,7 @@
 <?php
+//
+// Courses front-end shortcode UI
+//
 $args = array(
    'post_type' => 'te_course',
    'posts_per_page' => 10,
