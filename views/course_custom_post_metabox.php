@@ -1,12 +1,13 @@
 <?php
-
+//
+// Admin 'Add Course' Form - Course Details
+//
 // Custom Fields
 // tagline, topics, ucas_code, duration, study_mode, start_month, learning_mode
+//
 
 // to do : limit input text lengths - rollout
-
 ?>
-
    <label class="te_label">
       <span class="te_label_text">Tagline</span>
       <input   

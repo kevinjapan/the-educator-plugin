@@ -1,10 +1,11 @@
 <?php
-
+//
+// Admin 'Add Job' Form - Job Details
+//
 // Custom Fields
 // school_or_section, staff_category, position_type, duration, grade, salary, location, ref, closing_date
-
+//
 ?>
-
    <label class="te_label">
       <span class="te_label_text">School/Section</span>
       <input
@@ -58,7 +59,6 @@
       </select>
    </label>
  
-
    <label class="te_label">
       <span class="te_label_text">Salary</span>
       <select name="_te_job_array_fields[salary]" id="te_job_salary_field">
