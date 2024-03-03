@@ -16,11 +16,21 @@ label.te_label {
    grid-template-columns: 1fr 4fr;
    justify-content:space-between;
    /* width:100%; */
-   margin-bottom:.5rem;
+   margin-bottom:1rem;
 }
 label.te_label span.te_label_text {
    padding-top:.35rem;
 }
+div.te_legend {
+   font-style:italic;
+   width:100%;
+   text-align:right;
+   margin-top:1rem;
+   margin-bottom:0;
+   padding-bottom:0;
+   color:grey;
+}
+div.te_legend > * {display:inline;}
 input.te_input {
    width:100%;
    background:hsl(0, 0%, 97%);

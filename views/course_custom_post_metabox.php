@@ -14,17 +14,19 @@
          id="te_course_tagline_field"
          name="_te_course_array_fields[tagline]"
          value="<?php echo esc_attr($details['tagline']); ?>" 
-         type="text">
+         type="text"/>
    </label>
 
+   <div class="te_legend">
+         <div>Enter a comma-separated list of topics for this course</div>
+   </div>
    <label class="te_label">
       <span class="te_label_text">Topics</span>
-      <!-- to do : tidy layout while including: <span>Enter a comma-separated list of topics for this course:</span> -->
-         <input    
-            id="te_course_topics_field"
-            name="_te_course_array_fields[topics]"
-            value="<?php echo esc_attr($details['topics']); ?>" 
-            type="text">
+      <input    
+         id="te_course_topics_field"
+         name="_te_course_array_fields[topics]"
+         value="<?php echo esc_attr($details['topics']); ?>" 
+         type="text"/>
    </label>
                
    <label class="te_label">
@@ -33,7 +35,7 @@
          id="te_course_ucas_code_field"
          name="_te_course_array_fields[ucas_code]"
          value="<?php echo esc_attr($details['ucas_code']);?>" 
-         type="text"  > 
+         type="text"/> 
    </label>
             
    <label class="te_label">
@@ -42,7 +44,7 @@
          id="te_course_duration_field"
          name="_te_course_array_fields[duration]" 
          value="<?php echo esc_attr($details['duration']);?>"
-         type="text"  >
+         type="text"/>
    </label>
 
    <label class="te_label">
