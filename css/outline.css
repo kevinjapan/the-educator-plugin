@@ -1,297 +1,981 @@
-/* 
-   outline css - main
-*/
+/* Outline CSS
+  "I have made this letter longer than usual, only because I have not had time to make it shorter"
+   Blaise Pascal, 17th Century French philosopher and mathematician. */
 
+@import "outline-custom-props.css";
+
+
+/* reset */
 *,*::before,*::after {
    -webkit-box-sizing: border-box;
    box-sizing: border-box;
-}
-
-html {
-   scroll-behavior: smooth;
-}
-
-/* default props */
-:root {
-   /* font stacks - enable one of these */
-   /* Sans-serif */
-   --font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-   /* Serif */
-   /* --font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol; */
-   /* Mono */
-   --font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
-
-   /* fonts */
-   --font-size:17px;
-
-   /* colors */
-   --primary-bg-color:orange;
-   --secondary-bg-color:blue;
-
-   --primary-text-color:blue;
-   --secondary-text-color:white; 
-
-   /* borders */
-   --border-color:#CCC;
-   --border-radius:.25rem;
-
-   /* headings */
-   --h1-heading:3em;
-   --h2-heading:2.5rem;
-   --h3-heading:2rem;
-   --h4-heading:1.5rem;
-   --h5-heading:1.25rem;
-   --h6-heading:1.15rem;
-
-   /* we calc heading line height from --h?-heading size */
-   --line-height-fraction:.95;
-
-   /* content */
-   --paragraph-width:66rem;
-   --form-width:32rem;
-   --indent-lists:1.75rem;
-}
-
-
-/* sectioning root */
-body {
-   font-size:var(--font-size);
-   font-family: var(--font-family);
    margin:0;
-   padding:1rem;
 }
 
+html {scroll-behavior: smooth;}
 
-/* content sectioning */
-/*
-address {}
-article {}
-aside {}
-*/
+/* Block layouts */
+body, address, article, aside, footer, header, main, nav, section {
+   width:100%;
+   margin:0 auto 0 auto;
+   padding:0;
+}
+
+/* the sectioning root - page content ----------------------  */
+body {
+   font-family: var(--font_family);
+   font-size:var(--font-size);
+   color:var(--body_text_color);
+   line-height:1.5rem;
+   width:100%;
+   min-height:100vh;
+   overflow-x:hidden;
+   -webkit-font-smoothing: antialiased;
+}
+
+/* the content sectioning elements ----------------------  */
+address,article,aside,header{
+   margin:0;
+}
 header {
    min-width:100%;
    margin:0;
 }
 
-h1 {
-   font-size:var(--h1-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h1-heading));
+/* section.footer ---------------------- */
+footer {
+   min-height:12rem;
+   margin-top:1rem;
+   padding:2rem;
+   padding-bottom:0.5rem;
+   color:white;
+   background-color:var(--dark_bg);
 }
-h2 {
-   font-size:var(--h2-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h2-heading));
+footer > ul:not(.footnote) {
+   display:-ms-grid;
+   display:grid;
+   -ms-grid-columns:1fr;
+   grid-template-columns:1fr;
 }
-h3 {
-   font-size:var(--h3-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h3-heading));
+footer ul.footnote   {
+   font-size:.9rem;
+   text-align:center;
+   margin-top:5rem;
+   margin-bottom:0;
 }
-h4 {
-   font-size:var(--h4-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h4-heading));
+footer a {
+   color:white;
+   text-decoration:none;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   max-height:2rem;
 }
-h5 {
-   font-size:var(--h5-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h5-heading));
-}
-h6 {
-   font-size:var(--h6-heading);
-   line-height:calc(var(--line-height-fraction) * var(--h6-heading));
+@media screen and (min-width: 1045px) {
+   footer > ul:not(.footnote) {
+      display:-ms-grid;
+      display:grid;
+      -ms-grid-columns:1fr 1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
+      grid-template-areas:
+         "footer_left footer_middle footer_right "
+         "footnote footnote footnote";
+   }
+   footer > ul.footnote {
+      grid-area:footnote;
+   }
 }
 
-/* main {} */
+h1, h2, h3, h4, h5, h6 {overflow-wrap: break-word;text-wrap: balance;padding:1rem;}
+h4, h5, h6 {padding:.5rem;}
+h1 {font-size:4rem;line-height:4.25rem;}
+h2 {font-size:3rem;line-height:3.25rem;}
+h3 {font-size:2.5rem;line-height:2.75rem;}
+h4 {font-size:2rem;line-height:2.25rem;}
+h5 {font-size:1.5rem;line-height:1.7rem;}
+h6 {font-size:1.25rem;line-height:1.5rem;}
 
-/* text content */
+/* main {visibility: visible;} */
 
-/* 
-blockquote {}
-div {}
-figcaption {}
-hr {}
-menu {}
-*/
+/* nav : main nav component : sm/mobile nav */
+nav {
+   position:-webkit-sticky;
+   position:sticky;
+   top:0;
+   z-index:500;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   height:var(--nav_bar_height);
+   background-color:white;
+   -webkit-transition:-webkit-transform .6s ease-in;
+   transition:-webkit-transform .6s ease-in;
+   -o-transition:transform .6s ease-in;
+   transition:transform .6s ease-in;
+   transition:transform .6s ease-in, -webkit-transform .6s ease-in;
+}
+/* logo_block covers sm navbar except hamburger - overlay in front of descending dropdown */
+nav div.logo_block {
+   z-index:50;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   -webkit-box-flex:2;
+   -ms-flex-positive:2;
+   flex-grow:2;
+   height:var(--nav_bar_height);
+   background:var(--nav_bar_bg);
+}
+nav div.logo_block img {max-height:50%;width:auto;}
+a.custom_logo_link {    
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   font-size:2rem;
+}
+nav a {
+   font-size:var(--nav_font_size);
+   margin-left:1rem;
+   color:var(--nav_bar_text_color);
+   color:var(--nav_dropdown_color);
+}
+/* top level nav items - dropdown in sm/mobile */
+nav ul.menu {
+   position:absolute;
+   z-index:2;
+   top:-100vh; /* default - dropdown is hidden - only hamburger visible */
+   left:0;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   gap:1rem;
+   height:100vh;
+   padding:calc(var(--nav_bar_height) + 2rem) 0 1rem 0;
+   background:var(--nav_mobile_dropdown_bg);
+   color:var(--nav_mobile_dropdown_color);
+   user-select:none;
+   -webkit-transform:translateY(-100vh);
+   -ms-transform:translateY(-100vh);
+   transform:translateY(-100vh);
+   opacity:0;
+   -webkit-transition:opacity 3s ease-in-out,-webkit-transform .5s ease-in-out;
+   transition:opacity 3s ease-in-out,-webkit-transform .5s ease-in-out;
+   -o-transition:transform .5s ease-in-out,opacity 3s ease-in-out;
+   transition:transform .5s ease-in-out,opacity 3s ease-in-out;
+   transition:transform .5s ease-in-out,opacity 3s ease-in-out,-webkit-transform .5s ease-in-out;
+}
+/* mobile menu toggle - rotating toggle_bars */
+nav > div.nav_toggle_wrap {
+   z-index:50;
+   padding:0 1rem 0 0;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   width:60px;
+   height:var(--nav_bar_height);
+   padding:0 1rem 0 0;
+   background:var(--nav_bar_bg);
+}
+nav div.nav_toggle {
+   position:relative;
+   z-index:3;
+   width:100%;
+   height:60px;
+   cursor:pointer;
+}
+nav div.nav_toggle .toggle_bar {
+   position:absolute;
+   top:0;
+   width:100%;
+   height:5px;
+   margin-bottom:5px;
+   background:var(--nav_bar_text_color);
+   -webkit-transform:rotate(0);
+   -ms-transform:rotate(0);
+   transform:rotate(0deg);
+   -webkit-transition:.5s ease-in-out;
+   -o-transition:.5s ease-in-out;
+   transition:.5s ease-in-out;
+}
+nav div.nav_toggle .toggle_bar:nth-child(1) {top:15px;}
+nav div.nav_toggle .toggle_bar:nth-child(2) {
+   top:30px;
+   left:0;
+   opacity:1;
+}
+nav div.nav_toggle .toggle_bar:nth-child(3) {top:45px;}
+nav div.nav_toggle.selected_toggle {
+   -webkit-transition:.25s ease-in-out;
+   -o-transition:.25s ease-in-out;
+   transition:.25s ease-in-out; 
+}
+nav div.nav_toggle.selected_toggle .toggle_bar:nth-child(1) {
+   top:30px;
+   -webkit-transform:rotate(135deg);
+   -ms-transform:rotate(135deg);
+   transform:rotate(135deg);
+}
+nav div.nav_toggle.selected_toggle .toggle_bar:nth-child(2) {
+   left:20px;
+   width:0;
+   opacity:0;
+}
+nav div.nav_toggle.selected_toggle .toggle_bar:nth-child(3) {
+   top:30px;
+   -webkit-transform:rotate(-135deg);
+   -ms-transform:rotate(-135deg);
+   transform:rotate(-135deg);
+}
+/* we hide all submenu dropdowns on mobile.. */
+nav ul.menu li ul {display:none;}
+/* ..then style the top level label links on sm/mobile dropdown */
+nav ul.menu > li > a {
+   /* margin:.5rem .5rem .5rem 5rem; */
+   max-width:fit-content;
+   font-size:1.5rem;
+   color:var(--nav_bar_text_color);
+}
+nav ul.menu.extended_sm_nav_dropdown {
+   -webkit-transform:translateY(100vh);
+   -ms-transform:translateY(100vh);
+   transform:translateY(100vh);
+   opacity:1;   
+   -webkit-transition:opacity .5s ease-in-out,-webkit-transform .5s ease-in-out;
+   transition:opacity .5s ease-in-out,-webkit-transform .5s ease-in-out;
+   -o-transition:transform .5s ease-in-out,opacity .5s ease-in-out;
+   transition:transform .5s ease-in-out,opacity .5s ease-in-out,-webkit-transform .5s ease-in-out; 
+}
+nav ul.menu li ul li a {margin:1rem;} /* important : maintains <a> spacing on transitions */
+@media screen and (hover: none) {
+   nav ul.menu {
+      gap:2rem;
+      padding-top:5rem;
+   }
+   nav a {font-size:var(--mobile_nav_font_size);}
+}
 
+/* nav : lg top main nav and full dropdown : from 1045px determined by four cols of reasonable text in dropdown */
+@media screen and (min-width: 1045px) {
+   nav div.logo_block {
+      min-width:fit-content;
+      background:var(--nav_bar_bg);
+   
+   }
+   /* top level nav items - always-visible navbar in lg/md (excludes logo_block (which grows)) */
+   nav ul.menu {
+      position:static;
+      z-index:var(--nav_layer);
+      display:flex;
+      -webkit-box-pack:end;
+      -ms-flex-pack:end;
+      -webkit-box-orient:horizontal;
+      -webkit-box-direction:normal;
+      -ms-flex-direction:row;
+      flex-direction:row;
+      justify-content:flex-end;
+      -webkit-box-align:center;
+      -ms-flex-align:center;
+      align-items:center;
+      max-height:var(--nav_bar_height);
+      padding:1rem 2rem 1rem 1rem;
+      background:var(--nav_bar_bg);
+      color:var(--nav_bar_text_color);
+      -webkit-box-flex:0;
+      -ms-flex-positive:0;
+      flex-grow:0;
+   } 
+   nav ul.menu:hover {
+      transform:unset;
+      transition:unset;
+      opacity:unset;
+   }
+   nav ul.menu li a.menu_label {padding:0 2rem;}   /* for WordPress */
+   /* reset from mobile */
+   nav div.nav_toggle_wrap, nav div.nav_toggle {display:none;} 
+   nav ul.menu, 
+   nav ul.menu.extended_sm_nav_dropdown {
+      transform:unset;
+      -webkit-transition:none;
+      -o-transition:none;
+      transition:none;
+      opacity:1;
+   }
+   nav ul.menu > li > a {
+      margin:0 auto 0 auto;
+      font-size:var(--nav_font_size);
+   }
+   /* md/lg dropdowns : renamed 'menu_dropdown' -> 'sub-menu' to support WordPress nav */
+   nav ul.menu ul.sub-menu {
+      position:absolute;
+      top:0;
+      left:0;
+      z-index:-99;
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -webkit-box-orient:vertical;
+      -webkit-box-direction:normal;
+      -ms-flex-direction:column;
+      flex-direction:column;
+      -ms-flex-wrap:wrap;
+      flex-wrap:wrap;
+      -webkit-box-pack:end;
+      -ms-flex-pack:end;
+      justify-content:flex-end;
+      -webkit-box-align:var(--align_items_lg_dropdown);
+      -ms-flex-align:var(--align_items_lg_dropdown);
+      align-items:var(--align_items_lg_dropdown);
+      gap:.25rem;
+      max-width:100%;
+      max-height:var(--nav_dropdown_height);
+      padding:1rem;
+      background:var(--nav_dropdown_bg);
+      color:var(--nav_dropdown_color);
+      -webkit-transform:translateY(-100%);
+      -ms-transform:translateY(-100%);
+      transform:translateY(-100%);
+      opacity:0;
+      -webkit-transition:opacity 3s ease-in-out .25s,border .5s ease-in-out,-webkit-transform .6s ease-in-out .25s;
+      -o-transition:transform .6s ease-in-out .25s,opacity 3s ease-in-out .25s,border .5s ease-in-out;
+      transition:transform .6s ease-in-out .25s,opacity 3s ease-in-out .25s,border .5s ease-in-out,-webkit-transform .6s ease-in-out .25s;
+   }
+   nav ul.menu .sub-menu li {
+      max-width:20%;
+      margin:0 2rem;
+   }
+   nav ul.menu .sub-menu li a {
+      margin:.5rem;
+   }
+   /* open it and keep it open : removed .menu_label from <a> for WordPress nav : next-sibling*/
+   nav ul.menu > li a:hover + ul.sub-menu,
+   nav ul.menu > li a + ul.sub-menu:hover {
+      -webkit-transform:translateY(var(--nav_bar_height));
+      -ms-transform:translateY(var(--nav_bar_height));
+      transform:translateY(var(--nav_bar_height));
+      opacity:1;
+      border-bottom:solid 3px hsl(0, 0%, 96%);
+      -webkit-transition:opacity .5s ease-in-out,border .5s ease-in-out,-webkit-transform .75s ease-in-out;
+      -o-transition:transform .75s ease-in-out,opacity .5s ease-in-out,border .1s ease-in-out;
+      transition:transform .75s ease-in-out,opacity .5s ease-in-out,border .1s ease-in-out,-webkit-transform .75s ease-in-out;
+   }
+}
+
+/* we use section as the base element of several component blocks */
+section {overflow-x:hidden;}
+
+/* the text content  elements ----------------------  */
 ul {
+   width:100%;
+   margin:0;
+   padding:0;
    list-style:none;
-   padding-left:var(--indent-lists);
-   padding-right:var(--indent-lists);
 }
-ol {
-   padding-left:var(--indent-lists);
-   padding-right:var(--indent-lists);
-}
-/* li {} */
 p {
+   width:min(100%,var(--paragraph_width));
    max-width:var(--paragraph-width);
-   margin:auto;
-   margin-top:3rem;
-   margin-bottom:3rem;
+   margin:0 auto;
+   padding:.5rem;
+   line-height:1.5rem;
+   overflow-wrap: break-word;
+   text-wrap: pretty;
+}
+
+/* the inline text semantic elements ---------------------- */
+a {
+   color:blue;
+   text-decoration:none;
+   cursor:pointer;
+   white-space:nowrap; /* to do : review :  breaks our navigation? */
+}
+a:hover {
+   text-decoration:none;
+}
+a:visited {
+   text-decoration:none;
+}
+b,br,cite {
+   margin:0;
+   padding:0;   
 }
 pre {
    padding:0;
    text-align:left;
 }
-
-
-/* -----------------------------------
-    inline text semantics 
-   ----------------------------------- */
-/* 
-a {}
-a:hover {}
-a:visited {}
-b {}
-br {}
-cite {}
-*/
+pre {
+   /* we prefer wrapping over scrolling in sm */
+   white-space:pre-wrap;
+   white-space:-moz-pre-wrap;
+   white-space:-pre-wrap;
+   white-space:-o-pre-wrap;
+   word-wrap:break-word;
+}
 code {
-   margin:0;
-   padding:0;   
-}
-/*
-em {}
-i {}
-mark {}
-q {}
-s {}
-samp {}
-small {}
-span {}
-strong {}
-sub {}
-sup {}
-var {}
-*/
-
-
-
-/* img and multimedia */
-/*
-img {}
-video {}
-embed {}
-iframe {}
-object {}
-*/
-
-
-/* table content */
-table {
-   border:solid 1px var(--border-color);
+   margin:.5rem;
    padding:0;
-   border-collapse:collapse;
+   padding-left:1rem;
+   padding-right:1rem;
+   background:hsl(0, 0%, 92%);   
 }
-thead {
-   font-size:1rem;
-   border:solid 1px var(--border-color);
-   color:var(--secondary-text-color);
-   background-color:var(--secondary-bg-color);
+pre code {
+   display:block;
+   width:fit-content;
 }
-th {
-   font-weight:300;
-   padding-left:.5rem;
-   padding-right:.5rem;
-   border:solid 1px var(--border-color);
+
+/* the image and multimedia elements ----------------------  */
+img, picture, video, canvas, svg {
+   display: block;
+   max-width: 100%;
+   border-radius:var(--img_border_radius);
+ }
+
+/* Form elements ----------------------  */
+/* button, fieldset, form, input, label, option, select, textarea */
+form {
+   width:var(--paragraph_width);
+   margin:1rem auto 3rem auto;
+   padding:1rem;
+   border:solid 1px lightgrey;
+   border-radius:var(--rounded_border);
 }
-tbody {
-   margin:0;padding:0;
+input, button, textarea, select {
+   font: inherit;
 }
-tr {
-   border:solid 1px var(--border-color);
-   margin:0;padding:0;
+form > div {
+   display:-ms-grid;
+   display:grid;
+   -ms-grid-columns:1fr 4fr;
+   grid-template-columns:1fr 4fr;
+   gap:.5rem;
+   margin:1rem 1.5rem 1rem 1rem;
 }
-td {
-   border:solid 1px var(--border-color);
-   margin:0;
-   padding-left:.5rem;
-   padding-right:.5rem;
+form label {
+   padding:.5rem;
 }
-/* 
-tfoot {}
-caption {}
-col {}
-colgroup {} 
+form input {
+   font-family:var(--form_font_family);
+   font-size:1.3rem;
+   height:fit-content;
+   padding:.5rem;
+}
+form textarea {
+   font-family:var(--form_font_family);
+   font-size:1.3rem;
+   min-height:8rem;
+   height:8rem;
+   max-height:16rem;
+   padding:.5rem;
+   resize: vertical;
+}
+button {
+   width:fit-content;
+   margin:2rem auto 2rem auto;
+   padding:.5rem 1rem .5rem 1rem;
+   background:transparent;
+   color:hsl(0, 0%, 60%);
+   border:solid 1px hsl(0, 0%, 60%);
+   border-radius:var(--rounded_border);
+   cursor:pointer;
+   font-size:1.1rem;
+}
+/* default is button on white bg */
+button:hover {
+   color:hsl(0, 0%, 10%);
+   border:solid 1px hsl(0, 0%, 10%);
+}
+
+/* Interactive elements ----------------------  */
+/* details, dialog, summary */
+
+
+/*
+----------------------  Outline CSS Component Blocks ---------------------- 
 */
 
+/* section.title_lead_block ---------------------- */
+section.title_lead_block {
+   text-align:center;
+}
+section.title_lead_block > * {
+   padding-top:0.25rem;
+   padding-bottom:0.25rem;
+}
+section.title_lead_block.align_left {text-align:left;}
+section.title_lead_block.align_right {text-align:right;}
 
+/* section.gallery ---------------------- */
+section.gallery {
+   padding:3rem 1rem;
+}
+section.gallery > ul {
+   display:-ms-grid;
+   display:grid;
+   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+   gap:1rem;
+}
+section.gallery li > img {
+   width:100%;
+   border-radius:var(--rounded_border);
+}
 
-/* forms */
-form {
+/* section.animated_tiles ---------------------- */
+section.animated_tiles > ul {
+   display:-ms-grid;
+   display:grid;
+   grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+   gap:0;
+}
+section.animated_tiles > ul > li {
+   position:relative;      /* supports overlay */
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
-
    -webkit-box-orient:vertical;
    -webkit-box-direction:normal;
    -ms-flex-direction:column;
    flex-direction:column;
-
-   width:var(--form-width);
-   margin-left:auto;
-   margin-right:auto;
-}
-form label {
-   display:-webkit-box;
-   display:-ms-flexbox;
-   display:flex;
    -webkit-box-pack:justify;
    -ms-flex-pack:justify;
    justify-content:space-between;
    -webkit-box-align:center;
    -ms-flex-align:center;
-   gap:1rem;
-}
-form label * {
-   width:75%;
-   padding:.5rem; 
-   font-size:1.2rem;
-}
-form label textarea {
-   height:8rem;
-}
-input {
-   margin-top:1rem;
-   margin-bottom:1rem;
-}
-/* 
-label {}
-legend {}
-option {}
-progress {}
-select {}
-textarea {}
-*/
-
-/* button */
-button {
-   width:fit-content;
+   align-items:center;
    padding:1rem;
-   background:transparent;
-   color:hsl(0, 0%, 80%);
-   border:solid 1px hsl(0, 0%, 75%);
-   border-radius:.5rem;
-   cursor:pointer;
-   font-size:1.1rem;
+   overflow:hidden;
+   background:hsl(0, 0%, 20%);
+   color:white;
 }
-button:hover {
+section.animated_tiles > ul > li *:not(img) {
+   z-index:3;
+}
+/* dimmer overlay */
+section.animated_tiles > ul > li::before {
+   content:'';
+   position:absolute;
+   top:0;
+   left:0;
+   z-index:2;
+   width:100%;
+   height:100%;
+   background:black;
+   opacity:0;
+}
+section.animated_tiles > ul > li:hover::before {
+   opacity:0.6;
+}
+/* background image */
+section.animated_tiles > ul > li > img {
+   position:absolute;
+   top:0;
+   left:0;
+   z-index:1;
+   width:100%;
+   height:100%;
+   -webkit-transform:scale(1.01);
+   -ms-transform:scale(1.01);
+   transform:scale(1.01);  /* prevents sizing flicker on transform */
+   -webkit-transition:1s;
+   -o-transition:1s;
+   transition:1s;
+}
+section.animated_tiles > ul > li:hover > img {
+   -webkit-transform:scale(1.2);
+   -ms-transform:scale(1.2);
+   transform:scale(1.2);
+   -webkit-transition:1s;
+   -o-transition:1s;
+   transition:1s; 
+}
+section.animated_tiles p {
+   font-size:1.3rem;
+   text-align:center;
+   opacity:0;
+   -webkit-transition:opacity .5s ease-in-out;
+   -o-transition:opacity .5s ease-in-out;
+   transition:opacity .5s ease-in-out;
+}
+section.animated_tiles button {
+   opacity:0;
+   -webkit-transition:opacity .5s ease-in-out;
+   -o-transition:opacity .5s ease-in-out;
+   transition:opacity .5s ease-in-out;
+}
+section.animated_tiles > ul > li:hover > p,
+section.animated_tiles > ul > li:hover > button {
+   opacity:1;
+   -webkit-transition:opacity .5s ease-in-out;
+   -o-transition:opacity .5s ease-in-out;
+   transition:opacity .5s ease-in-out;
+}
+section.animated_tiles button:hover {
    color:hsl(0, 0%, 100%);
    border:solid 1px white;
 }
-/*
- - button styling variations come largely from utility classes - see xxx-outline-utilities.css 
-*/
+
+/* section.feature_block ---------------------- */
+/* two panel block - img on left, text on right (reversible) */
+section.feature_block {
+   display:-ms-grid;
+   display:grid;
+   -ms-grid-columns:1fr;
+   grid-template-columns:1fr;
+   max-width:100%;
+}
+/* text overlay */
+section.feature_block > div, section.feature_block > div.feature_text {      
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   -webkit-box-align:start;
+   -ms-flex-align:start;
+   align-items:flex-start;
+   justify-items:start;
+   gap:1rem;
+   min-width:50%;
+   padding:1rem;
+   /* stack in sm */
+   -ms-flex-order:2;
+   order:2;
+}
+section.feature_block img {
+   /* stack in sm */
+   -ms-flex-order:1;
+   order:1;
+}
+section.feature_block p {
+   margin:o;
+   font-size:1.1rem;
+}
+section.feature_block.reverse_order {
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:reverse;
+   -ms-flex-direction:column-reverse;
+   flex-direction:column-reverse;
+}
+@media screen and (min-width: 910px) {
+   section.feature_block {
+      -ms-grid-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr;
+   }
+   section.feature_block.reverse_order {
+      -webkit-box-orient:horizontal;
+      -webkit-box-direction:reverse;
+      -ms-flex-direction:row-reverse;
+      flex-direction:row-reverse;
+   }
+   section.feature_block > div,
+   section.feature_block > div.feature_text,
+   section.feature_block img {
+      -webkit-box-ordinal-group:unset;
+      -ms-flex-order:unset;
+      order:unset;
+   }
+}
+
+/* section.feature_tiles ---------------------- */
+section.feature_tiles {
+   width:100%;
+   height:fit-content;
+   margin-left:auto;
+   margin-right:auto;
+}
+section.feature_tiles > ul {
+   display:-ms-grid;
+   display:grid;
+   -ms-grid-columns:1fr;
+   grid-template-columns:1fr;
+   gap:var(--feature_tiles_gap);
+   padding-left:var(--feature_tiles_gap);
+   padding-right:var(--feature_tiles_gap);
+}
+section.feature_tiles > ul > li {
+   /* we don't necessarily want everything centering
+      so we use flex rather than text-align */
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   gap:.5rem;
+   /* we don't want images to lose aspect ratio */
+   width:100%;
+   height:fit-content;
+   margin:0;
+   padding:1rem;
+   overflow-x:hidden;
+   border:solid 1px lightgrey;
+   border-radius:var(--rounded_border);
+}
+section.feature_tiles h1,
+section.feature_tiles h2,
+section.feature_tiles h3,
+section.feature_tiles h4,
+section.feature_tiles h5,
+section.feature_tiles h6 {
+   width:fit-content;
+   text-align:left;
+   margin:0 auto 0 auto; /* to do : surely these are set in base level headings? */
+}
+section.feature_tiles *.align_start {
+   margin-left:0;
+   margin-right:auto;
+}
+section.feature_tiles  > ul > li > img {
+   /* img width can expand: containing li has overflow-x:hidden */
+   height:100%;
+}
+section.feature_tiles > ul > li > div:not(button) {
+   position:relative;
+   z-index:300;
+   width:94%;
+   margin:0 auto;
+   margin-top:-30px;
+   background:white;
+   padding:0 1.5rem 1rem 1.5rem;
+   text-align:center;
+}
+section.feature_tiles p {
+   font-size:1.1rem;
+   text-align:center;
+}
+section.feature_tiles a {
+   margin-top:1rem;
+   margin-bottom:1rem;
+   text-decoration:none;
+}
+section.feature_tiles > ul > li > button {
+   -ms-flex-item-align:center;
+   -ms-grid-row-align:center;
+   align-self:center;
+   margin-top:1rem;
+   margin-bottom:.5rem;
+}
+@media screen and (min-width: 660px) {   
+   section.feature_tiles > ul {
+      -ms-grid-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr;
+      width:100%;
+      padding-left:auto;
+      padding-right:auto;
+   }
+}
+@media screen and (min-width: 910px) {
+   section.feature_tiles > ul {
+      -ms-grid-columns:1fr 1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
+   }
+}
+
+/* section.cover_block ---------------------- */
+/* large heading over background img - plus optional text & button */
+section.cover_block {
+   position:relative;
+   height:var(--cover_block_height);
+   padding-top:5rem;
+   padding-bottom:5rem;
+   overflow:hidden;
+   background:transparent;
+   color:white;
+}
+/* img overlay */
+section.cover_block::before {
+   content:'';
+   position:absolute;
+   top:0;
+   left:0;
+   z-index:0;
+   width:100%;
+   height:100%;
+   background:black;
+   opacity:0;
+}
+section.cover_block:has(div) {
+   height:fit-content;
+}
+section.cover_block p {
+   margin:auto 0 auto 0;
+   font-size:1.2rem;
+}
+section.cover_block .bg_img {
+   position:absolute;
+   top:0;
+   left:0;
+   z-index:-1;
+   width:100%;
+   -o-object-fit:cover;
+   object-fit:cover; 
+   background-attachment:fixed;
+   background-position:bottom;
+}
+section.cover_block div.text_overlay {
+   position:relative;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   -ms-flex-pack:distribute;
+   justify-content:space-around;
+   gap:1rem;
+   width:fit-content;
+   margin-left:.5rem;
+   margin-right:.5rem;
+   padding:.5rem;
+}
+section.cover_block button {
+   color:hsl(0, 0%, 90%);
+   border:solid 1px hsl(0, 0%, 90%);
+}
+section.cover_block button:hover{
+   color:hsl(0, 0%, 100%);
+   border:solid 1px white;
+}
+
+/* section.faqs_block ---------------------- */
+section.faqs_block > ul > li {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   margin:1rem 2rem 1rem 2rem;
+}
+section.faqs_block > ul > li *:nth-child(2) {
+   padding:0 0 0 2rem;
+   width:100%;
+   max-height:0;  /* we use max-height to enable since it needs to calc transition */
+   overflow:hidden;
+   -webkit-transition:max-height .35s ease-in-out;
+   -o-transition:max-height .35s ease-in-out;
+   transition:max-height .35s ease-in-out; 
+}
+section.faqs_block > ul > li *:nth-child(2).open_faq {
+   max-height:600px;
+   -webkit-transition:max-height .35s ease-in-out .1s;
+   -o-transition:max-height .35s ease-in-out .1s;
+   transition:max-height .35s ease-in-out .1s;
+}
+.faq_toggle {cursor:pointer;}
 
 
 
-/* colors */
-.lightgray {color:hsl(0, 0%, 63%);}
+/* transition behaviours  ---------------------- */
+.fade_in {
+   opacity:0;
+   -webkit-transition:opacity .75s ease-in;
+   -o-transition:opacity .75s ease-in;
+   transition:opacity .75s ease-in;
+}
+.appear {
+   opacity:1;
+   -webkit-transition:opacity .75s ease-in;
+   -o-transition:opacity .75s ease-in;
+   transition:opacity .75s ease-in;
+}
+.hide_on_scroll_down {
+   -webkit-transform:translateY(-100%);
+   transform:translateY(-100%);
+   -webkit-transition:-webkit-transform .6s ease-in;
+   transition:-webkit-transform .6s ease-in;
+   -o-transition:transform .6s ease-in;
+   transition:transform .6s ease-in, -webkit-transform .6s ease-in;
+}
 
+/* improve readability - darken_img utility - cover_block | animated_tiles */
+section.darken_img::before,   section > ul > li.darken_img::before   {opacity:0.2;}
+section.darken_img_1::before, section > ul > li.darken_img_1::before {opacity:0.1;}
+section.darken_img_2::before, section > ul > li.darken_img_2::before {opacity:0.2;}
+section.darken_img_3::before, section > ul > li.darken_img_3::before {opacity:0.3;}
+section.darken_img_4::before, section > ul > li.darken_img_4::before {opacity:0.4;}
 
+/* color utilities ---------------------- */
+.primary_bg    {background: var(--primary_bg);}
+.secondary_bg  {background: var(--secondary_bg);}
+.light_bg      {background: var(--light_bg);}
+.dark_bg       {background: var(--dark_bg);color:var(--light_text);}
+.accent_bg     {background: var(--accent_bg);}
+.semantic_pos_bg  {background: var(--semantic_pos_bg);}
+.semantic_neg_bg  {background: var(--semantic_neg_bg);}
+.semantic_warn_bg {background: var(--semantic_warn_bg);}
+.semantic_neutral_bg {background: var(--semantic_neutral_bg);}
+.bg_yellow_100 {background:hsl(60, 100%, 70%);}
 
+/* grid / flex utilities */
+.flex {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   flex-wrap:nowrap;
+}
+.align_center {
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+}
+.center_self {
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-self:center;
+}
+.justify_center {
+   -webkit-box-pack:center;
+   -ms-flex-pack:center;
+   justify-content:center;
+}
+/* ensure we break words cleanly in code elements */
+.break_words {
+   white-space:normal; 
+   word-wrap:break-word;
+   overflow-wrap:break-word;
+   word-break:break-word;
+}
 
-/* font-weights */
-.font-100 {font-weight:100;}
+/* spacing utilities */
+.m_1  {margin:1rem;}
+.m_2  {margin:2rem;}
+.m_3  {margin:3rem;}
+.mt_1 {margin-top:1rem;}
+.mt_2 {margin-top:2rem;}
+.mt_3 {margin-top:3rem;}
+.mb_1 {margin-bottom:1rem;}
+.mb_2 {margin-bottom:2rem;}
+.mb_3 {margin-bottom:3rem;}
+.p_1  {padding:1rem;}
+.p_2  {padding:2rem;}
+.p_3  {padding:3rem;}
+.pt_1  {padding-top:1rem;}
+.pt_2  {padding-top:2rem;}
+.pt_3  {padding-top:3rem;}
+.pb_1  {padding-bottom:1rem;}
+.pb_2  {padding-bottom:2rem;}
+.pb_3  {padding-bottom:3rem;}
 
-
-/* utilities */
-.indent {margin-left:3rem;}
-
+.rounded {border-radius:var(--rounded_border);}
